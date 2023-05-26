@@ -9,9 +9,7 @@ RUN apt-get update -qq \
 RUN npm install -g dbdocs @dbml/cli
 
 WORKDIR /active-dbml
-COPY Gemfile .
-COPY Gemfile.lock .
-# COPY . .
+COPY . .
 
 RUN gem update --system ${RUBYGEMS_VERSION} && \
   bundle install
