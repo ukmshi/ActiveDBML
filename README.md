@@ -13,6 +13,12 @@ ActiveDBML is open for improvements. We eagerly welcome and encourage pull reque
 - [English](/)
 - [日本語](/docs/ja.md)
 
+## Support
+Supports Rails 6 or higher.
+
+## Future plans
+- Support for Polymorphic associations.
+
 
 ## Usage
 
