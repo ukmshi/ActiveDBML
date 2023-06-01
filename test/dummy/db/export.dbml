@@ -1,0 +1,49 @@
+Table user_profiles {
+  id INTEGER [pk, not null]
+  user_id bigint [ref: - users.id]
+  age INTEGER 
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  Indexes {
+    user_id [name: 'index_user_profiles_on_user_id']
+  }
+}
+
+Table users {
+  id INTEGER [pk, not null]
+  first_name varchar 
+  last_name varchar 
+  middle_name varchar 
+  created_at datetime [not null]
+  updated_at datetime [not null]
+}
+
+Table comments {
+  id INTEGER [pk, not null]
+  user_id bigint [ref: > users.id]
+  article_id bigint [ref: > articles.id]
+  comment varchar 
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  Indexes {
+    article_id [name: 'index_comments_on_article_id']
+    user_id [name: 'index_comments_on_user_id']
+  }
+}
+
+Table articles {
+  id INTEGER [pk, not null]
+  user_id bigint [ref: > users.id]
+  article_id bigint 
+  title varchar 
+  article_body varchar 
+  created_at datetime [not null]
+  updated_at datetime [not null]
+
+  Indexes {
+    article_id [name: 'index_articles_on_article_id']
+    user_id [name: 'index_articles_on_user_id']
+  }
+}
