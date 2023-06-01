@@ -11,38 +11,45 @@ module Active
     end
 
     def self.generate_dbml(models)
-      dbml_output = []
-      # 出力済みのEnumを追跡
-      enums_generated = Set.new
+      begin
+        dbml_output = []
+        # 出力済みのEnumを追跡
+        enums_generated = Set.new
+  
+        models.each do |model|
+          if ActiveRecord::Base.connection.table_exists?(model.table_name)
+            # 抽象クラスはスキップ
+            next if model.abstract_class?
 
-      models.each do |model|
-        if ActiveRecord::Base.connection.table_exists?(model.table_name)
-          primary_key = get_primary_key(model)
-          foreign_keys = get_foreign_keys(model)
-
-          dbml_output << "Table #{model.table_name} {"
-
-          # Enumを取得
-          defined_enums = model.defined_enums.keys
-
-          # カラム情報を生成
-          generate_columns(dbml_output, model, primary_key, foreign_keys, defined_enums)
-
-          # Index情報の取得
-          generate_indexes(dbml_output, model)
-
-          # テーブルコメントの取得
-          generate_table_comment(dbml_output, model)
-
-          # テーブルを閉じる
-          dbml_output << "}\n"
-
-          # Enumの詳細を取得
-          generate_enums(dbml_output, model, enums_generated)
+            primary_key = get_primary_key(model)
+            foreign_keys = get_foreign_keys(model)
+  
+            dbml_output << "Table #{model.table_name} {"
+  
+            # Enumを取得
+            defined_enums = model.defined_enums.keys
+  
+            # カラム情報を生成
+            generate_columns(dbml_output, model, primary_key, foreign_keys, defined_enums)
+  
+            # Index情報の取得
+            generate_indexes(dbml_output, model)
+  
+            # テーブルコメントの取得
+            generate_table_comment(dbml_output, model)
+  
+            # テーブルを閉じる
+            dbml_output << "}\n"
+  
+            # Enumの詳細を取得
+            generate_enums(dbml_output, model, enums_generated)
+          end
         end
+  
+        dbml_output.join("\n")
+      rescue => exception
+        Rails.logger.error exception
       end
-
-      dbml_output.join("\n")
     end
 
     private
@@ -58,7 +65,7 @@ module Active
         foreign_key = association.options[:foreign_key]
         foreign_key_destination = "#{association.plural_name}.#{association.class_name.constantize.primary_key}"
 
-        # NOTE: Check record type
+        # NOTE: Check model type
         # Skip anything other than ActiveRecord::Base
         if association.class_name.constantize < ActiveRecord::Base
           association.class_name.constantize.reflect_on_all_associations.each do |relation_association|
