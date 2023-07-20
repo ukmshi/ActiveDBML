@@ -63,14 +63,14 @@ module Active
       # get foreign key only belongs_to association
       model.reflect_on_all_associations(:belongs_to).each do |association|
         begin
+          foreign_key = association.foreign_key
+          foreign_key_destination = "#{association.plural_name}.#{association.class_name.constantize.primary_key}"
+
           # NOTE: Check model type
           # Skip anything other than ActiveRecord::Base
           if association.class_name.constantize < ActiveRecord::Base
             association.class_name.constantize.reflect_on_all_associations.each do |relation_association|
               if model.table_name.eql?(relation_association.plural_name)
-                foreign_key = association.options[:foreign_key]
-                foreign_key_destination = "#{association.plural_name}.#{association.class_name.constantize.primary_key}"
-
                 case relation_association.macro
                 when :has_one
                   foreign_keys[foreign_key] = { destination: foreign_key_destination, relation_type: '-' }
