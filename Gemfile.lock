@@ -1,8 +1,8 @@
 PATH
   remote: .
   specs:
-    active-dbml (0.1.0)
-      rails (~> 7)
+    active-dbml (0.2.3)
+      rails (>= 6)
 
 GEM
   remote: https://rubygems.org/
@@ -93,7 +93,7 @@ GEM
     method_source (1.0.0)
     mini_mime (1.1.2)
     minitest (5.18.0)
-    net-imap (0.3.4)
+    net-imap (0.3.6)
       date
       net-protocol
     net-pop (0.1.2)
@@ -145,7 +145,7 @@ GEM
       sprockets (>= 3.0.0)
     sqlite3 (1.6.3-x86_64-linux)
     thor (1.2.2)
-    timeout (0.3.2)
+    timeout (0.4.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     websocket-driver (0.7.5)
