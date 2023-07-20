@@ -62,29 +62,33 @@ module Active
 
       # get foreign key only belongs_to association
       model.reflect_on_all_associations(:belongs_to).each do |association|
-        foreign_key = association.options[:foreign_key]
-        foreign_key_destination = "#{association.plural_name}.#{association.class_name.constantize.primary_key}"
+        begin
+          # NOTE: Check model type
+          # Skip anything other than ActiveRecord::Base
+          if association.class_name.constantize < ActiveRecord::Base
+            association.class_name.constantize.reflect_on_all_associations.each do |relation_association|
+              if model.table_name.eql?(relation_association.plural_name)
+                foreign_key = association.options[:foreign_key]
+                foreign_key_destination = "#{association.plural_name}.#{association.class_name.constantize.primary_key}"
 
-        # NOTE: Check model type
-        # Skip anything other than ActiveRecord::Base
-        if association.class_name.constantize < ActiveRecord::Base
-          association.class_name.constantize.reflect_on_all_associations.each do |relation_association|
-            if model.table_name.eql?(relation_association.plural_name)
-              case relation_association.macro
-              when :has_one
-                foreign_keys[foreign_key] = { destination: foreign_key_destination, relation_type: '-' }
-              when :has_many
-                foreign_keys[foreign_key] = { destination: foreign_key_destination, relation_type: '>' }
-              else
+                case relation_association.macro
+                when :has_one
+                  foreign_keys[foreign_key] = { destination: foreign_key_destination, relation_type: '-' }
+                when :has_many
+                  foreign_keys[foreign_key] = { destination: foreign_key_destination, relation_type: '>' }
+                else
+                end
               end
             end
+          elsif association.class_name.constantize < ActiveYaml::Base
+            puts "⚠ #{association.class_name.constantize} is an ActiveYaml model."
+          elsif association.class_name.constantize < ActiveHash::Base
+            puts "⚠ #{association.class_name.constantize} is an ActiveHash model."
+          else
+            puts "⚠ Cannot determine type of #{association.class_name.constantize}"
           end
-        elsif association.class_name.constantize < ActiveYaml::Base
-          puts "⚠ #{association.class_name.constantize} is an ActiveYaml model."
-        elsif association.class_name.constantize < ActiveHash::Base
-          puts "⚠ #{association.class_name.constantize} is an ActiveHash model."
-        else
-          puts "⚠ Cannot determine type of #{association.class_name.constantize}"
+        rescue => exception
+          Rails.logger.error exception
         end
       end
 
