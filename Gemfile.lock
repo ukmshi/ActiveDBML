@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    active-dbml (0.2.3)
+    active-dbml (0.2.4)
       rails (>= 6)
 
 GEM

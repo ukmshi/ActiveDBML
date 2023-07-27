@@ -100,6 +100,7 @@ module Active
         options = []
         options.push 'pk' if primary_key.eql?(column.name)
         options.push 'not null' if !column.null
+        options.push "default: '#{column.default}'" if column.default
         options.push "note: '#{column.comment}'" if column.comment.present?
         options.push "ref: #{foreign_keys[column.name][:relation_type]} #{foreign_keys[column.name][:destination]}" if foreign_keys.key?(column.name)
 
@@ -135,7 +136,8 @@ module Active
         if key.present? && !enums_generated.include?(key)
           dbml_output << "Enum #{key} {"
           value.keys.each do |value_key|
-            dbml_output << "  #{value_key}"
+            translation = model.human_attribute_name("#{key}.#{value_key}")
+            dbml_output << "  #{value_key} [note: '#{translation}']"
           end
 
           dbml_output << "}\n"
@@ -151,6 +153,8 @@ module Active
           return 'boolean'
         when 'datetime(6)'
           return 'datetime'
+        when 'INTEGER'
+          return 'bigint'
         else
           return sql_type
       end
