@@ -1,0 +1,9 @@
+ja:
+  activerecord:
+    models:
+      user: ユーザー
+      user_profile: ユーザープロフィール
+    attributes:
+      user_profile/sex_code:
+        man: 男性
+        woman: 女性
