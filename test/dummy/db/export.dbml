@@ -1,7 +1,8 @@
 Table user_profiles {
-  id INTEGER [pk, not null]
+  id bigint [pk, not null]
   user_id bigint [ref: - users.id]
-  age INTEGER 
+  age bigint [default: '0']
+  sex_code sex_code [default: '01']
   created_at datetime [not null]
   updated_at datetime [not null]
 
@@ -10,8 +11,13 @@ Table user_profiles {
   }
 }
 
+Enum sex_code {
+  man [note: '男性']
+  woman [note: '女性']
+}
+
 Table users {
-  id INTEGER [pk, not null]
+  id bigint [pk, not null]
   first_name varchar 
   last_name varchar 
   middle_name varchar 
@@ -20,7 +26,7 @@ Table users {
 }
 
 Table comments {
-  id INTEGER [pk, not null]
+  id bigint [pk, not null]
   user_id bigint [ref: > users.id]
   article_id bigint [ref: > articles.id]
   comment varchar 
@@ -34,7 +40,7 @@ Table comments {
 }
 
 Table articles {
-  id INTEGER [pk, not null]
+  id bigint [pk, not null]
   user_id bigint [ref: > users.id]
   article_id bigint 
   title varchar 

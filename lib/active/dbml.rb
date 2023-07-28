@@ -63,14 +63,14 @@ module Active
       # get foreign key only belongs_to association
       model.reflect_on_all_associations(:belongs_to).each do |association|
         begin
+          foreign_key = association.foreign_key
+          foreign_key_destination = "#{association.plural_name}.#{association.class_name.constantize.primary_key}"
+
           # NOTE: Check model type
           # Skip anything other than ActiveRecord::Base
           if association.class_name.constantize < ActiveRecord::Base
             association.class_name.constantize.reflect_on_all_associations.each do |relation_association|
               if model.table_name.eql?(relation_association.plural_name)
-                foreign_key = association.options[:foreign_key]
-                foreign_key_destination = "#{association.plural_name}.#{association.class_name.constantize.primary_key}"
-
                 case relation_association.macro
                 when :has_one
                   foreign_keys[foreign_key] = { destination: foreign_key_destination, relation_type: '-' }
@@ -100,6 +100,7 @@ module Active
         options = []
         options.push 'pk' if primary_key.eql?(column.name)
         options.push 'not null' if !column.null
+        options.push "default: '#{column.default}'" if column.default
         options.push "note: '#{column.comment}'" if column.comment.present?
         options.push "ref: #{foreign_keys[column.name][:relation_type]} #{foreign_keys[column.name][:destination]}" if foreign_keys.key?(column.name)
 
@@ -135,7 +136,8 @@ module Active
         if key.present? && !enums_generated.include?(key)
           dbml_output << "Enum #{key} {"
           value.keys.each do |value_key|
-            dbml_output << "  #{value_key}"
+            translation = model.human_attribute_name("#{key}.#{value_key}")
+            dbml_output << "  #{value_key} [note: '#{translation}']"
           end
 
           dbml_output << "}\n"
@@ -151,6 +153,8 @@ module Active
           return 'boolean'
         when 'datetime(6)'
           return 'datetime'
+        when 'INTEGER'
+          return 'bigint'
         else
           return sql_type
       end
