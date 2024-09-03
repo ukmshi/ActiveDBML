@@ -1,35 +1,36 @@
-version: '3.7'
-
 services:
-  db:
+  mysql:
     platform: linux/x86_64
-    image: mariadb:10.6.5
+    image: mysql:5.7
     volumes:
-      - db-data:/var/lib/mysql
-    environment:
-      MARIADB_ROOT_PASSWORD: ${DB_PASSWORD}
+      - mysql-data:/var/lib/mysql
     ports:
-    - "${DATABASE_PORT:-3306}:3306"
+      - ${MYSQL_PORT:-3306}:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+
+  postgresql:
+    image: postgres:latest
+    volumes:
+      - postgresql-data:/var/lib/postgresql/data
+    ports:
+      - ${POSTGRESQL_PORT:-5432}:5432
+    environment:
+      - POSTGRES_PASSWORD=password
 
   app:
     build:
       context: .
-      dockerfile: Dockerfile
-    command: /bin/bash
-    # command: /bin/sh -c "rm -f tmp/pids/server.pid && rm -f log/development.log && bundle exec rails server -b '0.0.0.0'"
-    # /bin/sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
-    tty: true
-    stdin_open: true
-    ports:
-      - ${RAILS_PORT:-3000}:3000
+    environment:
+      DB_HOST: mysql
+      AR_VERSION: 7.0
     volumes:
-      - ./:/active-dbml
-      - bundle_data:/usr/local/bundle
-    env_file:
-      - ./.env
+      - .:/usr/src/app
     depends_on:
-      - db
+      - mysql
+      - postgresql
+    command: tail -f /dev/null
 
 volumes:
-  db-data:
-  bundle_data:
+  mysql-data:
+  postgresql-data:

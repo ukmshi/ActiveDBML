@@ -1,3 +1,9 @@
+## [Unreleased]
+
+## [0.1.0] - 2024-09-02
+
+- Initial release
+
 ## Ver 0.2.5
 
 - Output Enum translations to comments

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 module Active
-  module Dbml
-    VERSION = '0.2.5'
+  module DBML
+    VERSION = "0.1.0"
   end
 end

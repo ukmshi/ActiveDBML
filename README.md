@@ -1,53 +1,39 @@
-# Active::Dbml
+# Active::DBML
 
-ActiveDBML: A Gem for Bridging Database Design and Development
+TODO: Delete this and the text below, and describe your gem
 
-ActiveDBML is a new, useful Ruby gem designed to streamline database development. At its core, this gem provides a Rake Task that outputs Database Markup Language (DBML) from ActiveRecord. Its primary aim is to alleviate discrepancies between database definitions and actual development, ensuring consistency across all stages of development.
+Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/active/dbml`. To experiment with that code, run `bin/console` for an interactive prompt.
 
-The purpose of developing this gem originated from the need to bridge the gap between DB definitions and development, providing a robust solution to a common problem. We hope that by making this gem publicly available, it will not only make the life of developers easier but also contribute to the broader software development community.
+## Installation
 
-ActiveDBML is open for improvements. We eagerly welcome and encourage pull requests and issue submissions. We envision this gem evolving, becoming more comprehensive, and better with collective input and efforts. Our ultimate goal is to enhance this gem further, based on your valuable feedback and contributions. Join us in this journey to make ActiveDBML an essential tool in every developer's toolkit.
+TODO: Replace `UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG` with your gem name right after releasing it to RubyGems.org. Please do not do it earlier due to security reasons. Alternatively, replace this section with instructions to install your gem from git if you don't plan to release to RubyGems.org.
 
-## Other language docs
+Install the gem and add to the application's Gemfile by executing:
 
-- [English](/)
-- [日本語](/docs/ja.md)
+    $ bundle add UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
 
-## Support
-Supports Rails 6 or higher.
+If bundler is not being used to manage dependencies, install the gem by executing:
 
-## Future plans
-- Support for Polymorphic associations.
-
+    $ gem install UPDATE_WITH_YOUR_GEM_NAME_PRIOR_TO_RELEASE_TO_RUBYGEMS_ORG
 
 ## Usage
 
-``` sh
-$ rake active_dbml:export
+TODO: Write usage instructions here
 
-# or (In the case you want to specify the export destination)
-$ rake active_dbml:export["export/path.dbml"]
-```
+## Development
 
-## Installation
-Add this line to your application's Gemfile:
+After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
-```ruby
-gem "active-dbml"
-```
-
-And then execute:
-```bash
-$ bundle
-```
-
-Or install it yourself as:
-```bash
-$ gem install active-dbml
-```
+To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and the created tag, and push the `.gem` file to [rubygems.org](https://rubygems.org).
 
 ## Contributing
-Contribution directions go here.
+
+Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/active-dbml. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/[USERNAME]/active-dbml/blob/master/CODE_OF_CONDUCT.md).
 
 ## License
+
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+## Code of Conduct
+
+Everyone interacting in the Active::DBML project's codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/active-dbml/blob/master/CODE_OF_CONDUCT.md).
