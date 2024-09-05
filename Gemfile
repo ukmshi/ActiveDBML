@@ -38,5 +38,6 @@ else
   gem "factory_bot", "~> 5", "< 6.4.5"
 end
 
+gem 'rails-erd'
 gem "pry-byebug"
 gem "pry", "~> 0.14.0"
