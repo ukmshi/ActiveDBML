@@ -155,6 +155,8 @@ module Active
           return 'datetime'
         when 'INTEGER'
           return 'bigint'
+        when /unsigned/
+          return "\"#{sql_type}\""
         else
           return sql_type
       end
